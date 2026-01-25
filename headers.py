@@ -18,7 +18,7 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.fsm.context import FSMContext
 
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton
-from aiogram.utils.keyboard import InlineKeyboardBuilder
+from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
 
 import json
 
@@ -1040,6 +1040,177 @@ async def aloqa(message:Message):
 
 
 
+
+# ---------- STATES ----------
+class ChannelStates(StatesGroup):
+    add_name = State()
+    add_telegram_id = State()
+    add_link = State()
+    delete_choose = State()
+
+# ---------- ORM HELPERS (async wrappers) ----------
+@sync_to_async
+def db_channel_create(name: str, telegram_id: int, link: str) -> Channels:
+    return Channels.objects.create(name=name, telegram_id=telegram_id, link=link)
+
+@sync_to_async
+def db_channel_list():
+    return list(Channels.objects.all().order_by("id"))
+
+@sync_to_async
+def db_channel_delete_by_id(pk: int) -> int:
+    deleted, _ = Channels.objects.filter(id=pk).delete()
+    return deleted
+
+@sync_to_async
+def db_channel_exists_by_tg_id(tg_id: int) -> bool:
+    return Channels.objects.filter(telegram_id=tg_id).exists()
+
+# ---------- KEYBOARDS ----------
+def admin_channels_menu_kb():
+    kb = ReplyKeyboardBuilder()
+    kb.button(text="➕ Kanal qo'shish")
+    kb.button(text="➖ Kanal o'chirish")
+    kb.button(text="📋 Kanallar ro'yxati")
+    kb.button(text="⬅️ Orqaga")
+    kb.adjust(2, 1)
+    return kb.as_markup(resize_keyboard=True)
+
+def cancel_kb():
+    kb = ReplyKeyboardBuilder()
+    kb.button(text="❌ Bekor qilish")
+    return kb.as_markup(resize_keyboard=True)
+
+def channels_delete_inline_kb(channels: list[Channels]):
+    kb = InlineKeyboardBuilder()
+    for ch in channels:
+        kb.button(
+            text=f"🗑 {ch.name} (id:{ch.id})",
+            callback_data=f"ch_del:{ch.id}"
+        )
+    kb.button(text="❌ Bekor qilish", callback_data="ch_del_cancel")
+    kb.adjust(1)
+    return kb.as_markup()
+
+# ---------- COMMAND / MENU ----------
+@router.message(F.text == '📢 Kanal sozlamalari', IsAdmin())
+async def channels_admin_menu(message: Message, state: FSMContext):
+    await state.clear()
+    await message.answer("📌 Kanal boshqaruvi:", reply_markup=admin_channels_menu_kb())
+
+# ---------- LIST ----------
+@router.message(F.text == "📋 Kanallar ro'yxati", IsAdmin())
+async def channels_list(message: Message):
+    items = await db_channel_list()
+    if not items:
+        await message.answer("Hozircha kanal yo‘q.", reply_markup=admin_channels_menu_kb())
+        return
+
+    text = "📋 Kanallar ro'yxati:\n\n" + "\n".join(
+        [f"{c.id}) {c.name}\n   tg_id: {c.telegram_id}\n   link: {c.link}" for c in items]
+    )
+    await message.answer(text, reply_markup=admin_channels_menu_kb())
+
+# ---------- ADD FLOW ----------
+@router.message(F.text == "➕ Kanal qo'shish", IsAdmin())
+async def add_start(message: Message, state: FSMContext):
+    await state.set_state(ChannelStates.add_name)
+    await message.answer("Kanal nomini yubor:", reply_markup=cancel_kb())
+
+@router.message(ChannelStates.add_name, F.text)
+async def add_name(message: Message, state: FSMContext):
+    if message.text == "❌ Bekor qilish":
+        await state.clear()
+        await message.answer("Bekor qilindi.", reply_markup=admin_channels_menu_kb())
+        return
+
+    await state.update_data(name=message.text.strip())
+    await state.set_state(ChannelStates.add_telegram_id)
+    await message.answer("Kanal telegram_id yubor (masalan: -1001234567890):", reply_markup=cancel_kb())
+
+@router.message(ChannelStates.add_telegram_id, F.text)
+async def add_telegram_id(message: Message, state: FSMContext):
+    if message.text == "❌ Bekor qilish":
+        await state.clear()
+        await message.answer("Bekor qilindi.", reply_markup=admin_channels_menu_kb())
+        return
+
+    raw = message.text.strip().replace(" ", "")
+    if not (raw.lstrip("-").isdigit()):
+        await message.answer("telegram_id raqam bo‘lishi kerak. Qayta yubor:")
+        return
+
+    tg_id = int(raw)
+    if await db_channel_exists_by_tg_id(tg_id):
+        await message.answer("Bu telegram_id bazada bor. Boshqasini yubor:")
+        return
+
+    await state.update_data(telegram_id=tg_id)
+    await state.set_state(ChannelStates.add_link)
+    await message.answer("Kanal linkini yubor (masalan: https://t.me/kanal yoki @kanal):", reply_markup=cancel_kb())
+
+@router.message(ChannelStates.add_link, F.text)
+async def add_link(message: Message, state: FSMContext):
+    if message.text == "❌ Bekor qilish":
+        await state.clear()
+        await message.answer("Bekor qilindi.", reply_markup=admin_channels_menu_kb())
+        return
+
+    link = message.text.strip()
+    data = await state.get_data()
+    await db_channel_create(
+        name=data["name"],
+        telegram_id=data["telegram_id"],
+        link=link
+    )
+    await state.clear()
+    await message.answer("✅ Kanal qo‘shildi!", reply_markup=admin_channels_menu_kb())
+
+# ---------- DELETE FLOW ----------
+@router.message(F.text == "➖ Kanal o'chirish", IsAdmin())
+async def delete_start(message: Message, state: FSMContext):
+    items = await db_channel_list()
+    if not items:
+        await message.answer("O‘chirish uchun kanal yo‘q.", reply_markup=admin_channels_menu_kb())
+        return
+
+    await state.set_state(ChannelStates.delete_choose)
+    await message.answer(
+        "Qaysi kanalni o‘chirasan? (pastdan tanla)",
+        reply_markup=channels_delete_inline_kb(items)
+    )
+
+@router.callback_query(ChannelStates.delete_choose, F.data.startswith("ch_del:"))
+async def delete_confirm(call: CallbackQuery, state: FSMContext):
+    pk = int(call.data.split(":")[1])
+    deleted = await db_channel_delete_by_id(pk)
+
+    if deleted:
+        await call.answer("O‘chirildi ✅", show_alert=False)
+    else:
+        await call.answer("Topilmadi ⚠️", show_alert=False)
+
+    await state.clear()
+    # qayta ro'yxat ko'rsatib yuboramiz
+    items = await db_channel_list()
+    if not items:
+        await call.message.edit_text("Hamma kanallar o‘chirildi.")
+        await call.message.answer("📌 Kanal boshqaruvi:", reply_markup=admin_channels_menu_kb())
+        return
+
+    text = "📋 Qolgan kanallar:\n\n" + "\n".join([f"{c.id}) {c.name} — {c.link}" for c in items])
+    await call.message.edit_text(text)
+    await call.message.answer("📌 Kanal boshqaruvi:", reply_markup=admin_channels_menu_kb())
+
+@router.callback_query(ChannelStates.delete_choose, F.data == "ch_del_cancel")
+async def delete_cancel(call: CallbackQuery, state: FSMContext):
+    await state.clear()
+    await call.answer("Bekor qilindi", show_alert=False)
+    await call.message.answer("📌 Kanal boshqaruvi:", reply_markup=admin_channels_menu_kb())
+
+
+
+
 import os
 import io
 import zipfile
@@ -1115,6 +1286,100 @@ async def sos_backup_handler(message: Message):
 
 
 
+class messagesClass(StatesGroup):
+    mess = State()
+
+
+
+
+
+
+
+
+@router.message(messagesClass.mess)
+async def message_state(message: Message, state: FSMContext):
+    users = await sync_to_async(lambda: list(TelegramUsers.objects.all()))()
+
+
+    error = 0
+    count = 0
+
+    for user in users:
+        try:
+            # ✅ AGAR XABAR MATN BO'LSA
+            if message.text:
+                await message.bot.send_message(
+                    chat_id=user.telegram_id,
+                    text=message.text
+                )
+
+            # ✅ AGAR XABAR RASM BO'LSA
+            elif message.photo:
+                await message.bot.send_photo(
+                    chat_id=user.telegram_id,
+                    photo=message.photo[-1].file_id,
+                    caption=message.caption if message.caption else None
+                )
+
+            # ✅ AGAR XABAR VIDEO BO'LSA (ixtiyoriy)
+            elif message.video:
+                await message.bot.send_video(
+                    chat_id=user.telegram_id,
+                    video=message.video.file_id,
+                    caption=message.caption if message.caption else None
+                )
+
+            count += 1
+            await asyncio.sleep(0.1)
+
+        except Exception as e:
+            print('Xabar tarqatishda muamo:', e)
+            error += 1
+
+    await message.answer(
+        text=f"✅ Xabar yetkazildi: {count}\n❌ Tarqatilmadi: {error}",
+        reply_markup=admin_panel_buttons
+    )
+
+    await state.clear()
+
+
+
+
+@router.message(F.text == "📨 Xabar tarqatish", IsAdmin())
+async def tarqart(message:Message, state: FSMContext):
+    await message.answer(text="Tarqatmoqchi bo'lgan xabaringizni yuboring.", reply_markup=back)
+    await state.set_state(messagesClass.mess)
+
+
+
+
+# ---- ORM stats ----
+@sync_to_async
+def db_get_stats():
+    return {
+        "users": TelegramUsers.objects.count(),
+        "anime": Anime.objects.count(),
+        "apps": AppLacations.objects.count(),
+        "channels": Channels.objects.count(),
+        "videos": Video.objects.count(),
+        "subs": Subscriptions.objects.count(),
+    }
+
+# ---- handler: 📊 Statistika ----
+@router.message(F.text == "📊 Statistika", IsAdmin())
+async def show_stats(message: Message):
+    s = await db_get_stats()
+    text = (
+        "📊 *Statistika:*\n\n"
+        f"👤 TelegramUsers: *{s['users']}*\n"
+        f"🎬 Anime: *{s['anime']}*\n"
+        f"📱 AppLacations: *{s['apps']}*\n"
+        f"📢 Channels: *{s['channels']}*\n"
+        f"🎞 Video: *{s['videos']}*\n"
+        f"⭐ Subscriptions: *{s['subs']}*\n"
+    )
+    await message.answer(text, parse_mode="Markdown", reply_markup=admin_panel_buttons)
 
 @router.message()
 async def  test(message:Message):
