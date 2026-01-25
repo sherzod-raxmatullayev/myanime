@@ -927,7 +927,7 @@ async def send_anime_epiot(call: CallbackQuery, anime_id, series_id):
     vedios = await sync_to_async(list)(Video.objects.filter(
         anime = anime_id
     ).order_by('series_number'))
-
+    await call.message.delete()
     video = await sync_to_async(
     Video.objects.filter(
         anime=anime_id,
