@@ -1381,6 +1381,127 @@ async def show_stats(message: Message):
     )
     await message.answer(text, parse_mode="Markdown", reply_markup=admin_panel_buttons)
 
+
+
+
+class SearchAnime(StatesGroup):
+    waiting_id = State()
+
+@router.callback_query(F.data == "search_kod")
+async def start_search_by_id(call: CallbackQuery, state: FSMContext):
+    await call.answer()
+    await state.set_state(SearchAnime.waiting_id)
+    await call.message.edit_text(
+        "🆔 Anime ID yuboring (faqat raqam).\n\n⬅️ Orqaga qaytish uchun tugmani bosing.",
+        reply_markup=backk()  # callback_data='back' bo'lishi shart
+    )
+
+@router.message(SearchAnime.waiting_id)
+async def got_anime_id(message: Message, state: FSMContext):
+    text = (message.text or "").strip()
+
+    if not text.isdigit():
+        await message.answer("❗️ID faqat raqam bo‘lishi kerak. Masalan: 12", reply_markup=backk())
+        return
+
+    anime_id = int(text)
+
+    # Sening tayyor funksiyang:
+    await send_anime_by_id(message=message, anime_id=anime_id)
+
+    # Qidiruv tugadi (xohlasang state'ni qoldirsa ham bo'ladi)
+    await state.clear()
+
+
+
+
+class UploadSeries(StatesGroup):
+    waiting_video = State()
+
+
+
+
+@sync_to_async
+def anime_exists(anime_id: int) -> bool:
+    return Anime.objects.filter(id=anime_id).exists()
+
+@sync_to_async
+def get_next_series_number(anime_id: int) -> int:
+    m = Video.objects.filter(anime_id=anime_id).aggregate(Max("series_number"))["series_number__max"]
+    return (m or 0) + 1
+
+@sync_to_async
+def add_video(anime_id: int, series_number: int, file_id: str):
+    return Video.objects.create(
+        anime_id=anime_id,
+        series_number=series_number,
+        video_file_id=file_id
+    )
+from django.db.models import Max
+
+
+
+@router.message(Command("animedow"))
+async def animedow_cmd(message: Message, state: FSMContext):
+    parts = (message.text or "").split(maxsplit=1)
+    if len(parts) < 2 or not parts[1].strip().isdigit():
+        await message.answer("Foydalanish: /animedow <anime_id>\nMasalan: /animedow 12")
+        return
+
+    anime_id = int(parts[1].strip())
+
+    if not await anime_exists(anime_id):
+        await message.answer("❌ Bunday ID bilan anime yo‘q.")
+        return
+
+    next_series = await get_next_series_number(anime_id)
+
+    await state.set_state(UploadSeries.waiting_video)
+    await state.update_data(anime_id=anime_id, next_series=next_series)
+
+    await message.answer(
+        f"✅ Anime ID={anime_id}\n"
+        f"📥 Hozir {next_series}-qismni yubor.\n\n"
+        f"⬅️ Chiqish uchun Back.",
+        reply_markup=backk()
+    )
+
+
+@router.message(UploadSeries.waiting_video)
+async def got_series_video(message: Message, state: FSMContext):
+    data = await state.get_data()
+    anime_id = data.get("anime_id")
+    next_series = data.get("next_series")
+
+    # Video file_id olish (qaysi turda yuborganiga qarab)
+    file_id = None
+    if message.video:
+        file_id = message.video.file_id
+    elif message.document:
+        # odamlar ko'pincha videoni "file" sifatida yuboradi
+        file_id = message.document.file_id
+
+    if not file_id:
+        await message.answer(
+            f"❗️Bu video emas. Iltimos {next_series}-qism videosini yubor (video yoki file ko‘rinishida).",
+            reply_markup=backk()
+        )
+        return
+
+    await add_video(anime_id=anime_id, series_number=next_series, file_id=file_id)
+
+    # Keyingi qismga o'tkazamiz
+    next_series += 1
+    await state.update_data(next_series=next_series)
+
+    await message.answer(
+        f"✅ Saqlandi: Anime ID={anime_id}, {next_series-1}-qism.\n"
+        f"📥 Endi {next_series}-qismni yubor.\n\n"
+        f"⬅️ Chiqish uchun Back.",
+        reply_markup=backk()
+    )
+
+
 @router.message()
 async def  test(message:Message):
     print(message.text)

@@ -1,0 +1,937 @@
+[
+{
+  "model": "main.telegramusers",
+  "pk": 1,
+  "fields": {
+    "telegram_id": 6950463049,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 2,
+  "fields": {
+    "telegram_id": 6491548196,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 3,
+  "fields": {
+    "telegram_id": 8013072656,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 4,
+  "fields": {
+    "telegram_id": 6884657245,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 5,
+  "fields": {
+    "telegram_id": 7029854529,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 6,
+  "fields": {
+    "telegram_id": 135491045,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 7,
+  "fields": {
+    "telegram_id": 7661716273,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 8,
+  "fields": {
+    "telegram_id": 8153447771,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 9,
+  "fields": {
+    "telegram_id": 8469025483,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 10,
+  "fields": {
+    "telegram_id": 5715244411,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 11,
+  "fields": {
+    "telegram_id": 7147610202,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 12,
+  "fields": {
+    "telegram_id": 8069022162,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 13,
+  "fields": {
+    "telegram_id": 8490995310,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 14,
+  "fields": {
+    "telegram_id": 7270272012,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 15,
+  "fields": {
+    "telegram_id": 7570246935,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 16,
+  "fields": {
+    "telegram_id": 7140989844,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 17,
+  "fields": {
+    "telegram_id": 1285369768,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 18,
+  "fields": {
+    "telegram_id": 6536084123,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 19,
+  "fields": {
+    "telegram_id": 5829605765,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 20,
+  "fields": {
+    "telegram_id": 6606893622,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 21,
+  "fields": {
+    "telegram_id": 8196570267,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 22,
+  "fields": {
+    "telegram_id": 7734483503,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 23,
+  "fields": {
+    "telegram_id": 624042666,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 24,
+  "fields": {
+    "telegram_id": 7001588911,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 25,
+  "fields": {
+    "telegram_id": 8019078849,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 26,
+  "fields": {
+    "telegram_id": 5735415898,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 27,
+  "fields": {
+    "telegram_id": 7113335744,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 28,
+  "fields": {
+    "telegram_id": 7876773664,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 29,
+  "fields": {
+    "telegram_id": 8399339716,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 30,
+  "fields": {
+    "telegram_id": 5381975884,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 31,
+  "fields": {
+    "telegram_id": 7794498240,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 32,
+  "fields": {
+    "telegram_id": 7567788783,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 33,
+  "fields": {
+    "telegram_id": 8269131787,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 34,
+  "fields": {
+    "telegram_id": 6866918307,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 35,
+  "fields": {
+    "telegram_id": 7948196453,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 36,
+  "fields": {
+    "telegram_id": 7052353349,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 37,
+  "fields": {
+    "telegram_id": 7244857807,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 38,
+  "fields": {
+    "telegram_id": 1740889690,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 39,
+  "fields": {
+    "telegram_id": 8139568159,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 40,
+  "fields": {
+    "telegram_id": 7983158495,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 41,
+  "fields": {
+    "telegram_id": 7868324136,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 42,
+  "fields": {
+    "telegram_id": 1246230220,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 43,
+  "fields": {
+    "telegram_id": 7955841711,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 44,
+  "fields": {
+    "telegram_id": 8054434187,
+    "balance": 0
+  }
+},
+{
+  "model": "main.telegramusers",
+  "pk": 45,
+  "fields": {
+    "telegram_id": 8157963818,
+    "balance": 0
+  }
+},
+{
+  "model": "main.channels",
+  "pk": 1,
+  "fields": {
+    "name": "Bosh kanal",
+    "telegram_id": -1001954758682,
+    "link": "https://t.me/aniBox_tv"
+  }
+},
+{
+  "model": "main.anime",
+  "pk": 1,
+  "fields": {
+    "name_uz": "Arifureta: Dunyodagi eng kuchli hunarmand",
+    "name_en": "Arifureta from commonplace to world's strongest",
+    "discreptin": "Arifureta: Oddiydan dunyoning eng kuchlisigacha oʻrta maktab oʻquvchisi Hajime Nagumo haqida hikoya qiladi.",
+    "janr": "Isekai, Fantaziya, Jangari, Sarguzasht, Haram",
+    "year": "2019",
+    "series_count": 12,
+    "photo_id": "AgACAgIAAxkBAAIBCmltvu5O4UGqEzuYKpXVdWXm47I_AAI5C2sb8etwS6MXWBNZHw-FAQADAgADeAADOAQ",
+    "views": 10
+  }
+},
+{
+  "model": "main.anime",
+  "pk": 2,
+  "fields": {
+    "name_uz": "Abadiylik qo'riqchisi",
+    "name_en": "UQ Holder!",
+    "discreptin": "Ken Akamatsuning yapon manga va anime seriali, uning avvalgi asari Negima dunyosida sodir bo'ladi ! Magister Negi Magi , Tota Konoening ortidan , adolat uchun kurashish va dunyoni g'ayritabiiy tahdidlardan himoya qilish uchun o'lmaslarning maxfiy jamiyatiga qo'shilgan vampirga aylangan bola, sehr ma'lum bo'lgan futuristik muhitda harakat, komediya va fantaziyani uyg'unlashtiradi.",
+    "janr": "Jangari, sarguzasht va fantaziya",
+    "year": "2017",
+    "series_count": 12,
+    "photo_id": "AgACAgIAAxkBAAIBN2ltw3Rk-0oAAeLIdSbho7dkScGCEgACXQtrG_HrcEttevxMoiBHrgEAAwIAA3kAAzgE",
+    "views": 4
+  }
+},
+{
+  "model": "main.anime",
+  "pk": 8,
+  "fields": {
+    "name_uz": "Ragnarok yozuvi",
+    "name_en": "Record of ragnarok",
+    "discreptin": "bu Shinya Umemura va  Takumirated Fukui tomonidan yozilganyapon manga seriyasidir . Turli mifologiyalardagi xudolarga qarshi ko'zga ko'ringan tarixiy shaxslar ishtirokida, insoniyat taqdiri muvozanatda bo'lgan turnir",
+    "janr": "Adventure \nDark fantasy\nMartial arts",
+    "year": "2025",
+    "series_count": 15,
+    "photo_id": "AgACAgIAAxkBAAIDZWl2GIH4L2G11AqTwKb7c2reBeleAAIaC2sbHxy4S3Ay84iZT24FAQADAgADeQADOAQ",
+    "views": 3
+  }
+},
+{
+  "model": "main.anime",
+  "pk": 9,
+  "fields": {
+    "name_uz": "Jodugarlar jangi 3-fasl",
+    "name_en": "Jujutsu Kaisen 3",
+    "discreptin": "Tavsif yo'q",
+    "janr": "Action Dark Fantasy Supernatural",
+    "year": "2026",
+    "series_count": 26,
+    "photo_id": "AgACAgIAAxkBAAIEBWl2He1XayPAQVRCnbNmIXyoMET7AAJGC2sbHxy4S7WKl-mTaP2DAQADAgADeAADOAQ",
+    "views": 9
+  }
+},
+{
+  "model": "main.anime",
+  "pk": 10,
+  "fields": {
+    "name_uz": "Jahannam jannati 2",
+    "name_en": "Hell's Paradise",
+    "discreptin": "Hikoya o'limga hukm qilingan shafqatsiz ninja qotili Gabimaru ichi bo'sh haqida hikoya qiladi",
+    "janr": "Action Adventure Dark Fantasy Psychological Thriller",
+    "year": "2026",
+    "series_count": 13,
+    "photo_id": "AgACAgIAAxkBAAIEtml2Z9-9SY3zvsVyPsHuIjh9tegUAAICDmsbHxy4SwS-GvACMU8lAQADAgADeAADOAQ",
+    "views": 9
+  }
+},
+{
+  "model": "main.anime",
+  "pk": 11,
+  "fields": {
+    "name_uz": "Re:Zero Hayotni noldan boshlash",
+    "name_en": "Re:Zero - Starting Life in Another World",
+    "discreptin": "Anime oddiy bolaning o'zga dunyoga tushib qayta tirilish qobilyatini olgani haqida",
+    "janr": "Comedy and Drama\nFantasy and Horror\nRomance\nThriller Coming of age story",
+    "year": "2016",
+    "series_count": 24,
+    "photo_id": "AgACAgIAAxkBAAIFFGl52uCGlNor3ZANisBvfPknlduUAAKdD2sbggjQS8QyZRbKWVBFAQADAgADeQADOAQ",
+    "views": 1
+  }
+},
+{
+  "model": "main.anime",
+  "pk": 12,
+  "fields": {
+    "name_uz": "29 yoshli sarguzashtchining kundalik hayoti",
+    "name_en": "An Adventurer's Daily Grind at Age 29",
+    "discreptin": "Serialda hozirda Komai qishlog'ida yashovchi mohir sarguzashtchi Hajime Shinonome hikoya qilinadi.",
+    "janr": "Fantasy, Slice of Life, and Adventure",
+    "year": "2026",
+    "series_count": 20,
+    "photo_id": "AgACAgIAAxkBAAIGeWl822-t1AABjbhucvYW5VquzshEqwACUg5rG2ao6EssECCKG29PtAEAAwIAA3gAAzgE",
+    "views": 6
+  }
+},
+{
+  "model": "main.anime",
+  "pk": 13,
+  "fields": {
+    "name_uz": "Yolg'iz qahramon: Ming hunar egasi",
+    "name_en": "Jack-of-All-Trades, Party of None",
+    "discreptin": "Hikoya bosh qahramon Orun haqida bo'lib, u barcha ishlarga usta bo'lgani, ammo biron bir sohada \"eng kuchli\" bo'lmagani uchun qahramonlar partiyasidan chiqarib yuboriladi.",
+    "janr": "Sarguzasht  fentezi  drama isekai",
+    "year": "2026",
+    "series_count": 12,
+    "photo_id": "AgACAgIAAxkBAAIHO2l-QOh2oep4BElvmbIsh1DGATJxAAKXEmsbVDfxS_6kfFEsy0VWAQADAgADeAADOAQ",
+    "views": 7
+  }
+},
+{
+  "model": "main.video",
+  "pk": 1,
+  "fields": {
+    "anime": 1,
+    "series_number": 1,
+    "video_file_id": "BAACAgQAAxkBAAIBw2ltzizqIsR2rMQ_BLIHlcvuZ2COAAIrDgACwdfQUf6UaoArMpRHOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 2,
+  "fields": {
+    "anime": 1,
+    "series_number": 2,
+    "video_file_id": "BAACAgIAAxkBAAIB2mlt0QVTZxcNsF7YpOx4hwABl0iGFwACIAUAAgvxcUm-IXLwpaswKDgE"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 3,
+  "fields": {
+    "anime": 1,
+    "series_number": 3,
+    "video_file_id": "BAACAgIAAxkBAAIB5Glt0qatMH7qDE7m4Xb7bHHkofAQAAJQBAACJ6JwSedhUCrFbfRDOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 4,
+  "fields": {
+    "anime": 2,
+    "series_number": 1,
+    "video_file_id": "BAACAgIAAxkBAAICYGlvsxqHQEZthcclDc_k-O11gQW7AAJCEwACAlmQSv3Y8_j-nb1WOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 5,
+  "fields": {
+    "anime": 2,
+    "series_number": 2,
+    "video_file_id": "BAACAgIAAxkBAAICcGlvtEOJMDJh94FEwnGOrPe6M3RsAAKlBAACZWbpSYN0vzZyJdMGOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 6,
+  "fields": {
+    "anime": 1,
+    "series_number": 4,
+    "video_file_id": "BAACAgIAAxkBAAICrGlwwVhoD0S-_GwL-cT6jQ6WVM3XAAJRBAACJ6JwSWn4RLc_IqspOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 7,
+  "fields": {
+    "anime": 1,
+    "series_number": 5,
+    "video_file_id": "BAACAgIAAxkBAAICYGlvsxqHQEZthcclDc_k-O11gQW7AAJCEwACAlmQSv3Y8_j-nb1WOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 8,
+  "fields": {
+    "anime": 8,
+    "series_number": 1,
+    "video_file_id": "BAACAgIAAxkBAAIDcWl2GM4GtaWnbwI-KdzmnBAfjzMCAAJohwACYkzRSZYyljhcbyNpOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 9,
+  "fields": {
+    "anime": 8,
+    "series_number": 2,
+    "video_file_id": "BAACAgIAAxkBAAIDeWl2GPfS3Zv95mADAuZp37aNeZ_EAAK6hwACZbHhScyuN7HTCXPxOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 10,
+  "fields": {
+    "anime": 8,
+    "series_number": 3,
+    "video_file_id": "BAACAgIAAxkBAAIDiWl2GSeeiAYK7-cL5fypgjiUzbmVAAIdjgACYEjwSdVOCEkndPK8OAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 11,
+  "fields": {
+    "anime": 8,
+    "series_number": 4,
+    "video_file_id": "BAACAgIAAxkBAAIDkWl2GT-XzLmchWOqVwzjTVZCHfpBAALykAACf60QSp_6UBzDNTseOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 12,
+  "fields": {
+    "anime": 8,
+    "series_number": 5,
+    "video_file_id": "BAACAgIAAxkBAAIDmWl2GVWrraAKIFTobqrIAAGlr3XNHgACBZcAAtwzGUp4qsifrUPCdTgE"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 13,
+  "fields": {
+    "anime": 8,
+    "series_number": 6,
+    "video_file_id": "BAACAgIAAxkBAAIDoWl2GWoKaE-h-Q4S1h0cl_Rzzd8jAALxlQACWu4gSvvkltXblvsbOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 14,
+  "fields": {
+    "anime": 8,
+    "series_number": 7,
+    "video_file_id": "BAACAgIAAxkBAAIDqWl2GYz8snis_iAOSV22O6M2V2b6AAKihwACXmEwSpWvqx8H9miXOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 15,
+  "fields": {
+    "anime": 8,
+    "series_number": 8,
+    "video_file_id": "BAACAgIAAxkBAAIDsWl2GaAAAQ1cfM6EkwPo4F-Uh_847AACEpcAAl5hOEoFIKhdbPg_HzgE"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 16,
+  "fields": {
+    "anime": 8,
+    "series_number": 9,
+    "video_file_id": "BAACAgIAAxkBAAIDuWl2GePfqZDl_tHVSqxl8dIO9_JTAAI_gAACV7pISmCTOYu45RIJOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 17,
+  "fields": {
+    "anime": 8,
+    "series_number": 10,
+    "video_file_id": "BAACAgIAAxkBAAIDwWl2GgG4wmgjBaMY-nfS-XshMHMgAALpiwACV7pISqaqXAUs7JaEOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 18,
+  "fields": {
+    "anime": 8,
+    "series_number": 11,
+    "video_file_id": "BAACAgIAAxkBAAIDyWl2Gi5gT_gx1jARxoX5qfmQMDYEAALbmQAC-nRhSml7T-aUkMXmOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 19,
+  "fields": {
+    "anime": 8,
+    "series_number": 12,
+    "video_file_id": "BAACAgIAAxkBAAID0Wl2GkqdiFCMpIxBE_T2E88jIX1XAAKikwAC-nRpSnJ8z4dCeK-qOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 20,
+  "fields": {
+    "anime": 8,
+    "series_number": 13,
+    "video_file_id": "BAACAgIAAxkBAAID2Wl2GmhWLQABYa05XGQpnYzHCjSlMwACPokAAuoKiEohFSd6pjoImTgE"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 21,
+  "fields": {
+    "anime": 8,
+    "series_number": 14,
+    "video_file_id": "BAACAgIAAxkBAAID4Wl2GoP4F3QqMr97vG_Drg76UWYMAAI2lgAC6gqISp0wBfEeSU4jOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 22,
+  "fields": {
+    "anime": 8,
+    "series_number": 15,
+    "video_file_id": "BAACAgIAAxkBAAID6Wl2GpkdBLm4wi2HI5q4lTHMKju3AAKZigAC1J-hShBY53IhjuiJOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 23,
+  "fields": {
+    "anime": 9,
+    "series_number": 1,
+    "video_file_id": "BAACAgQAAxkBAAIEEWl2HhqR3I9mojeyynbztG8sTx90AAJkHQACTpcZU9zh6QrychOkOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 24,
+  "fields": {
+    "anime": 9,
+    "series_number": 2,
+    "video_file_id": "BAACAgQAAxkBAAIEGWl2HjjG77VO8xuXg8BCcmhZ6jQ6AALSGgACVR0gU52L4IZlG-DsOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 25,
+  "fields": {
+    "anime": 9,
+    "series_number": 3,
+    "video_file_id": "BAACAgQAAxkBAAIEIWl2Hk5g0vfOrVArxW08uBMMV86gAAIYHgACAWBJU2lFoNlIVrDkOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 26,
+  "fields": {
+    "anime": 9,
+    "series_number": 4,
+    "video_file_id": "BAACAgQAAxkBAAIEKWl2HmbtRBT5LQF3ev6dwGKwxbojAAICHQACqTyQU3WsDht958bEOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 27,
+  "fields": {
+    "anime": 10,
+    "series_number": 1,
+    "video_file_id": "BAACAgIAAxkBAAIEwml2aAS9wSuLGKbs_36QwXrZM9UfAALUjAACSp9JS-0BOUUYzsauOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 28,
+  "fields": {
+    "anime": 10,
+    "series_number": 2,
+    "video_file_id": "BAACAgQAAxkBAAIEyml2aBW_1ffkFLppqB0X-L0nMjyiAAJdHAACbwxoUxO_XT6FK3XNOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 29,
+  "fields": {
+    "anime": 10,
+    "series_number": 3,
+    "video_file_id": "BAACAgIAAxkBAAIE0ml2aDg6hOZyZ9Vu9SjWAxKYtoWtAAJujAACVcS5S_gCtvS9zbZJOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 30,
+  "fields": {
+    "anime": 11,
+    "series_number": 1,
+    "video_file_id": "BAACAgIAAxkBAAIFIGl52wgxLfUtrhUYIUvmhBQDNvIoAAIGDAACy8ZwSj58-J1oNg7oOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 31,
+  "fields": {
+    "anime": 11,
+    "series_number": 2,
+    "video_file_id": "BAACAgIAAxkBAAIFKGl52xkNgDLFI_3kXW-FSVtlPAdeAAI0DgAC-eBgSukn97h1Pzv5OAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 32,
+  "fields": {
+    "anime": 11,
+    "series_number": 3,
+    "video_file_id": "BAACAgIAAxkBAAIFMGl52y3cVrdhAUCj__IUl5ut7oC-AALOFwAC_bNQSSIB5hfVYhxdOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 33,
+  "fields": {
+    "anime": 11,
+    "series_number": 4,
+    "video_file_id": "BAACAgIAAxkBAAIFOGl52z5ITUjN9KBMjgnaRUH4M6OTAAKWGAACVmhgSca2uJc4XgcSOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 34,
+  "fields": {
+    "anime": 11,
+    "series_number": 5,
+    "video_file_id": "BAACAgIAAxkBAAIFQGl521RNZvOv6d3YuTVUh9Zbjr2QAAKZGgACipKAST2_cNrsi6p-OAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 35,
+  "fields": {
+    "anime": 11,
+    "series_number": 6,
+    "video_file_id": "BAACAgIAAxkBAAIFSGl522vL_gX4RoBUQB38bveX2xbGAAIWGQACWC25SYWUtCX4IaJJOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 36,
+  "fields": {
+    "anime": 11,
+    "series_number": 7,
+    "video_file_id": "BAACAgIAAxkBAAIFW2l6bPrrKxDBbx3Dx3_Lt5vwHPhYAAIkFwADxfhJbr8svZNLZfw4BA"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 37,
+  "fields": {
+    "anime": 9,
+    "series_number": 5,
+    "video_file_id": "BAACAgQAAxkBAAIFgWl8Rxnk93MeeawZ0zBt2s4e88JfAAJQGgACw__gU7yO6i076U7GOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 38,
+  "fields": {
+    "anime": 12,
+    "series_number": 1,
+    "video_file_id": "BAACAgIAAxkBAAIGhWl825eBrd1o-TLMxB71owOeUALpAAKIlQACdMPRS8UEuEhGDTfbOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 39,
+  "fields": {
+    "anime": 12,
+    "series_number": 2,
+    "video_file_id": "BAACAgIAAxkBAAIGjWl826qJvY9Bb_qrVkNH6WmRSeSKAAKSlQACdMPRS7Abnk3eJxdmOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 40,
+  "fields": {
+    "anime": 12,
+    "series_number": 3,
+    "video_file_id": "BAACAgIAAxkBAAIGlWl8278RKL00xO_AMkQcUtVSUl1lAAKdlQACdMPRSziJbSVAFI4FOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 41,
+  "fields": {
+    "anime": 12,
+    "series_number": 4,
+    "video_file_id": "BAACAgIAAxkBAAIGnWl82883xtmjx58zuwf3t53IqkiJAALskwACfE3oS8sF0EXvt8D0OAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 42,
+  "fields": {
+    "anime": 13,
+    "series_number": 1,
+    "video_file_id": "BAACAgIAAxkBAAIHR2l-QP1jSYi1CQa1oS_5GsynN7ZIAAI1iwACX7DBSj0S06_xJjFTOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 43,
+  "fields": {
+    "anime": 13,
+    "series_number": 2,
+    "video_file_id": "BAACAgQAAxkBAAIHT2l-QRSBe7Le42FFuaYIVDraNVISAAKTHAACmjAAAVP8XY2gINmSbjgE"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 44,
+  "fields": {
+    "anime": 13,
+    "series_number": 3,
+    "video_file_id": "BAACAgIAAxkBAAIHV2l-QSPaa72BzWUHWAgZWtLS7zZ_AAJZkwACC2hJSzE4wi-LzRDsOAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 45,
+  "fields": {
+    "anime": 13,
+    "series_number": 4,
+    "video_file_id": "BAACAgIAAxkBAAIHX2l-QTIpngtwHVH6_xbPg9SnOf-nAAJIjQACim2QSw5zrfKUGrn5OAQ"
+  }
+},
+{
+  "model": "main.video",
+  "pk": 46,
+  "fields": {
+    "anime": 13,
+    "series_number": 5,
+    "video_file_id": "BAACAgIAAxkBAAIHZ2l-QUl1Z4uXZZ4pjpuzX23Nv5gaAAKglQACHgnwS-W38h7V0ccqOAQ"
+  }
+},
+{
+  "model": "main.subscriptions",
+  "pk": 1,
+  "fields": {
+    "anime": 2,
+    "telegram_user_id": 6950463049
+  }
+},
+{
+  "model": "main.subscriptions",
+  "pk": 2,
+  "fields": {
+    "anime": 10,
+    "telegram_user_id": 7147610202
+  }
+},
+{
+  "model": "main.subscriptions",
+  "pk": 3,
+  "fields": {
+    "anime": 10,
+    "telegram_user_id": 8153447771
+  }
+},
+{
+  "model": "main.subscriptions",
+  "pk": 4,
+  "fields": {
+    "anime": 11,
+    "telegram_user_id": 8269131787
+  }
+},
+{
+  "model": "main.subscriptions",
+  "pk": 5,
+  "fields": {
+    "anime": 12,
+    "telegram_user_id": 7052353349
+  }
+}
+]
