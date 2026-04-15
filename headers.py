@@ -1,4 +1,4 @@
-from ast import Delete
+from ast import Delete, Is
 from csv import Error
 from email import message
 from re import A
@@ -244,7 +244,7 @@ async def send_anime_by_id(message: Message, anime_id : int):
         f"📅 <b>Yil:</b> {anime.year}\n"
         f"📺 <b>Qismlar soni:</b> {anime.series_count}\n"
         f"👁 <b>Ko‘rishlar:</b> {anime.views}\n\n"
-        f"📝 <b>Tavsif:</b>\n{anime.discreptin}"
+        f"📝 <b>Duberlar:</b>\n{anime.discreptin}"
     )
     if anime.photo_id:
         await message.answer_photo(photo=anime.photo_id, caption=text, parse_mode='HTML', reply_markup=button(anime.id))
@@ -559,7 +559,7 @@ async def process_name_uz(message: Message, state: FSMContext):
 @router.message(AddAnimeStates.name_en)
 async def process_name_en(message: Message, state: FSMContext):
     await state.update_data(name_en=message.text)
-    await message.answer("📄 Anime haqida tavsif yozing:", reply_markup=backk())
+    await message.answer("📄 Anime haqida duberlarni yozing:", reply_markup=backk())
     await state.set_state(AddAnimeStates.discreptin)
 
 
@@ -716,7 +716,7 @@ async def send_anime_to_channel(anime_id: int):
         f"🆔 ID: {anime.id}\n\n"
         f"🎬 <b>{anime.name_uz}</b>\n"
         f"🇺🇸 <i>{anime.name_en}</i>\n\n"
-        f"📖 <b>Tavsif:</b>\n{anime.discreptin}\n\n"
+        f"📖 <b>Duberlar:</b>\n{anime.discreptin}\n\n"
         f"🎭 <b>Janr:</b> {anime.janr}\n"
         f"📅 <b>Yil:</b> {anime.year}\n"
         f"🎞 <b>Qismlar soni:</b> {anime.series_count}\n"
@@ -833,7 +833,7 @@ async def process_video_file(message: Message, state: FSMContext):
 
     caption = (
         f'✅ Yangi qisim qo\'shildi\n'
-        f'ID: {anime.id}'
+        f'ID: {anime.id}\n'
         f"🎬 <b>{anime.name_uz}</b>\n"
         f"🇺🇸 <i>{anime.name_en}</i>\n"
         f"🎞 <b>Qism:</b> {data['series_number']}\n\n"
@@ -1441,7 +1441,7 @@ from django.db.models import Max
 
 
 
-@router.message(Command("animedow"))
+@router.message(Command("animedow"), IsAdmin())
 async def animedow_cmd(message: Message, state: FSMContext):
     parts = (message.text or "").split(maxsplit=1)
     if len(parts) < 2 or not parts[1].strip().isdigit():

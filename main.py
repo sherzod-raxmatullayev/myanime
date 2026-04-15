@@ -1,3 +1,5 @@
+from tkinter import E
+
 from loader import dp, bot
 import asyncio
 import logging
@@ -20,5 +22,6 @@ async def main():
 if __name__ == "__main__":
     try:
         asyncio.run(main())
-    except:
+    except Exception as e:
         print("Bot to‘xtatildi ✅")
+        logger.error(f"Botda xatolik yuz berdi: {e}")
