@@ -652,7 +652,7 @@ async def process_photo_id(message: Message, state: FSMContext):
 
     # 📤 Kanalga yuborish
     await message.bot.send_photo(
-        chat_id=-1001954758682,
+        chat_id=-1002165160594,
         photo=data['photo_id'],
         caption=caption,
         parse_mode="HTML",
@@ -697,7 +697,7 @@ async def process_delete_anime(message: Message, state: FSMContext):
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from asgiref.sync import sync_to_async
 
-CHANNEL_ID = -1001954758682  # O‘z kanaling ID sini qo‘y
+CHANNEL_ID = -1002165160594  # O‘z kanaling ID sini qo‘y
 
 async def send_anime_to_channel(anime_id: int):
     """
@@ -852,7 +852,7 @@ async def process_video_file(message: Message, state: FSMContext):
         )
     if not message.caption:
         await message.bot.send_photo(
-            chat_id=-1001954758682,
+            chat_id=CHANNEL_ID,
             photo=anime.photo_id,
             caption=caption,
             reply_markup=down_bu(anime.id),
