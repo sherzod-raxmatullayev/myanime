@@ -31,7 +31,7 @@ router = Router()
 
 class IsAdmin(BaseFilter):
     async def __call__(self, message: Message) -> bool:
-        return message.from_user.id in [6950463049]
+        return message.from_user.id in [6950463049, 8153447771]
     
 
 
@@ -199,10 +199,10 @@ async def inlinestart(message: CallbackQuery):
             )
             await message.bot.send_message(chat_id=DEVLOPER_ID, text=text_new_user)
         await message.message.delete()
-        await message.message.answer("Asosiy sahifa!")
+        await message.message.answer("Asosiy sahifa!", reply_markup=main_menu)
     except Exception as e:
         print('inline startda xato', e)
-        await message.message.answer("Asosiy sahifa!")
+        await message.message.answer("Asosiy sahifa!", reply_markup=main_menu)
 
 
 
