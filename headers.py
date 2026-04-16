@@ -1,10 +1,4 @@
-from ast import Delete, Is
-from csv import Error
-from email import message
-from re import A
-import time
-from tkinter import Button
-from unittest import result
+
 from aiogram.types import Message, CallbackQuery, ChatJoinRequest
 from aiogram.filters import Command, CommandStart
 from aiogram import Router, F
@@ -644,7 +638,7 @@ async def process_photo_id(message: Message, state: FSMContext):
                 [
                     InlineKeyboardButton(
                         text='⬇️ Yuklash',
-                        url=f'https://t.me/anibox_dbbot?start={anime_id}'
+                        url=f'https://t.me/FOX_TV_STUDIOS_ROBOT?start={anime_id}'
                     )
                 ]
             ]
@@ -730,7 +724,7 @@ async def send_anime_to_channel(anime_id: int):
                 [
                     InlineKeyboardButton(
                         text='⬇️ Yuklash',
-                        url=f'https://t.me/anibox_dbbot?start={anime_id}'
+                        url=f'https://t.me/FOX_TV_STUDIOS_ROBOT?start={anime_id}'
                     )
                 ]
             ]
@@ -845,7 +839,7 @@ async def process_video_file(message: Message, state: FSMContext):
                 [
                     InlineKeyboardButton(
                         text='⬇️ Yuklash',
-                        url=f'https://t.me/anibox_dbbot?start={anime_id}'
+                        url=f'https://t.me/FOX_TV_STUDIOS_ROBOT?start={anime_id}'
                     )
                 ]
             ]
