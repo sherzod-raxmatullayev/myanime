@@ -1,3 +1,23 @@
-from django.shortcuts import render
+from os import wait
+from pyexpat import model
+from turtle import update
 
-# Create your views here.
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+
+from aiogram.types import Update
+
+from loader import bot, dp
+import bot_setup
+
+@csrf_exempt
+async def telegram_webhook(request):
+    if request.method != 'POST':
+        return HttpResponse("Method Not Allowed", status=405)
+
+    update = Update.model_validate_json(
+        await request.body
+    )
+    await dp.feed_update(bot, update)
+    return HttpResponse("OK", status=200)
