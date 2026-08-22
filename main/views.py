@@ -1,7 +1,3 @@
-from os import wait
-from pyexpat import model
-from turtle import update
-
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -17,7 +13,7 @@ async def telegram_webhook(request):
         return HttpResponse("Method Not Allowed", status=405)
 
     update = Update.model_validate_json(
-        await request.body
+        request.body
     )
     await dp.feed_update(bot, update)
     return HttpResponse("OK", status=200)
