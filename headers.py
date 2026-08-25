@@ -18,7 +18,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
 django.setup()
 
 from django.core.management import call_command
-from django.db.models import Max
+from django.db.models import Max, F as DjangoF
 
 from aiogram import Router, F
 from aiogram.filters import Command, CommandStart, BaseFilter
@@ -60,6 +60,11 @@ class IsAdmin(BaseFilter):
         return message.from_user.id in [6950463049,]
 
 
+class IsAdminCallback(BaseFilter):
+    async def __call__(self, call: CallbackQuery) -> bool:
+        return call.from_user.id == ADMIN_ID
+
+
 async def has_pending_channel(event) -> bool:
     """
     Foydalanuvchi hali barcha majburiy kanallarga a'zo bo'lmagan
@@ -87,8 +92,10 @@ async def has_pending_channel(event) -> bool:
             else:
                 return True
 
-        except Exception:
-            return False
+        except Exception as e:
+            # Tekshiruv ishlamasa, foydalanuvchini majburiy obunadan o‘tkazib yubormaymiz.
+            print(f'Kanal obunasini tekshirishda xato ({channel_id}):', e)
+            return True
 
     return False
 
@@ -478,17 +485,21 @@ def zip_bytes(filename: str, data: bytes) -> bytes:
 # ============================================================
 async def send_anime_by_id(message: Message, anime_id: int):
     anime = await search_anime_by_id(anime_id=anime_id)
-    anime.views += 1
-    await sync_to_async(anime.save)()
 
     if not anime:
         await message.answer('Anime topilmadi')
         return
 
+    # Bir nechta foydalanuvchi bir vaqtda ko‘rsa ham view yo‘qolib ketmasin.
+    await sync_to_async(
+        lambda: Anime.objects.filter(id=anime.id).update(views=DjangoF('views') + 1)
+    )()
+    anime.views += 1
+
     text = (
         f'ID {anime.id}\n\n'
         f"🎬 <b>{anime.name_uz}</b>\n\n"
-        f"🌍 <b>English:</b> {anime.name_en}\n"
+        # f"🌍 <b>English:</b> {anime.name_en}\n"
         f"🎭 <b>Janr:</b> {anime.janr}\n"
         f"📅 <b>Yil:</b> {anime.year}\n"
         f"📺 <b>Qismlar soni:</b> {anime.series_count}\n"
@@ -516,7 +527,7 @@ async def send_anime_to_channel(anime_id: int):
     caption = (
         f"🆔 ID: {anime.id}\n\n"
         f"🎬 <b>{anime.name_uz}</b>\n"
-        f"🇺🇸 <i>{anime.name_en}</i>\n\n"
+        # f"🇺🇸 <i>{anime.name_en}</i>\n\n"
         f"📖 <b>Duberlar:</b>\n{anime.discreptin}\n\n"
         f"🎭 <b>Janr:</b> {anime.janr}\n"
         f"📅 <b>Yil:</b> {anime.year}\n"
@@ -551,6 +562,10 @@ async def send_anime_epiot(call: CallbackQuery, anime_id, series_id):
             series_number=series_id
         ).first
     )()
+    if not video:
+        await call.answer('Bu qism mavjud emas.', show_alert=True)
+        return
+
     ved = video.video_file_id
 
     kb = InlineKeyboardBuilder()
@@ -606,8 +621,9 @@ async def handle_join_request(event: ChatJoinRequest):
 # START / ASOSIY MENYU
 # ============================================================
 @router.callback_query(F.data == 'start')
-async def handle_start_callback(message: CallbackQuery):
+async def handle_start_callback(message: CallbackQuery, state: FSMContext):
     try:
+        await state.clear()
         user, created = await sync_to_async(lambda: TelegramUsers.objects.get_or_create(
             telegram_id=message.from_user.id
         ))()
@@ -644,11 +660,12 @@ async def handle_start_callback(message: CallbackQuery):
 
 
 @router.message(CommandStart())
-async def handle_start_command(message: Message):
+async def handle_start_command(message: Message, state: FSMContext):
     try:
+        await state.clear()
         if len(message.text.split(' ')) == 2:
-            id = message.text.split(' ')[1]
-            await send_anime_by_id(message=message, anime_id=int(id))
+            anime_id = message.text.split(' ')[1]
+            await send_anime_by_id(message=message, anime_id=int(anime_id))
 
         user, created = await sync_to_async(lambda: TelegramUsers.objects.get_or_create(
             telegram_id=message.from_user.id
@@ -773,8 +790,8 @@ async def got_anime_id(message: Message, state: FSMContext):
 @router.callback_query(F.data.startswith('anime_'))
 async def inlineanime(call: CallbackQuery):
     try:
-        id = call.data.split('_')[1]
-        await send_anime_by_id(call.message, int(id))
+        anime_id = call.data.split('_')[1]
+        await send_anime_by_id(call.message, int(anime_id))
     except Exception as e:
         print('XATO', e)
 
@@ -783,13 +800,20 @@ async def inlineanime(call: CallbackQuery):
 async def follow(call: CallbackQuery):
     try:
         anime = await sync_to_async(Anime.objects.get)(id=int(call.data.split('_')[1]))
-        subscription = await sync_to_async(Subscriptions.objects.create)(
+        subscription, created = await sync_to_async(
+            Subscriptions.objects.get_or_create
+        )(
             telegram_user_id=call.from_user.id,
-            anime=anime
+            anime=anime,
         )
-        await call.message.answer('Siz obuna bo\'ldingiz')
+
+        if created:
+            await call.message.answer('Siz obuna bo\'ldingiz')
+        else:
+            await call.message.answer('Siz allaqachon obuna bo\'lgansiz!')
     except Exception as e:
-        await call.message.answer('Siz allaqachon obuna bo\'lgansiz!')
+        print('Obuna qo\'shishda xato:', e)
+        await call.message.answer('Obuna qilishda xatolik yuz berdi.')
 
 
 @router.callback_query(F.data.startswith('down_'))
@@ -822,11 +846,17 @@ async def kuzatilganlar(message: Message):
 async def deletes(call: CallbackQuery):
     await call.message.delete()
     id = call.data.split('_')[1]
-    result = await sync_to_async(Subscriptions.objects.filter(id=id).delete)()
-    if result:
+    deleted, _ = await sync_to_async(
+        Subscriptions.objects.filter(
+            id=id,
+            telegram_user_id=call.from_user.id,
+        ).delete
+    )()
+
+    if deleted:
         await call.message.answer('O\'chirildi!')
     else:
-        await call.message.answer('Xatolik')
+        await call.message.answer('Xatolik yoki bu obuna sizga tegishli emas.')
 
 
 @router.message(F.text == '👤 Profil')
@@ -868,35 +898,35 @@ async def start_add_anime(message: Message, state: FSMContext):
     await state.set_state(AddAnimeStates.name_uz)
 
 
-@router.message(AddAnimeStates.name_uz)
+@router.message(AddAnimeStates.name_uz, IsAdmin())
 async def process_name_uz(message: Message, state: FSMContext):
     await state.update_data(name_uz=message.text)
     await message.answer("📝 Animening inglizcha nomini kiriting:", reply_markup=backk())
     await state.set_state(AddAnimeStates.name_en)
 
 
-@router.message(AddAnimeStates.name_en)
+@router.message(AddAnimeStates.name_en, IsAdmin())
 async def process_name_en(message: Message, state: FSMContext):
     await state.update_data(name_en=message.text)
     await message.answer("📄 Anime haqida duberlarni yozing:", reply_markup=backk())
     await state.set_state(AddAnimeStates.discreptin)
 
 
-@router.message(AddAnimeStates.discreptin)
+@router.message(AddAnimeStates.discreptin, IsAdmin())
 async def process_discreptin(message: Message, state: FSMContext):
     await state.update_data(discreptin=message.text)
     await message.answer("🎭 Anime janrini kiriting:", reply_markup=backk())
     await state.set_state(AddAnimeStates.janr)
 
 
-@router.message(AddAnimeStates.janr)
+@router.message(AddAnimeStates.janr, IsAdmin())
 async def process_janr(message: Message, state: FSMContext):
     await state.update_data(janr=message.text)
     await message.answer("📅 Anime chiqgan yilini kiriting:", reply_markup=backk())
     await state.set_state(AddAnimeStates.year)
 
 
-@router.message(AddAnimeStates.year)
+@router.message(AddAnimeStates.year, IsAdmin())
 async def process_year(message: Message, state: FSMContext):
     if not message.text.isdigit() or len(message.text) != 4:
         await message.answer("⚠️ Iltimos, to'g'ri yil formatini kiriting (4 ta raqam):", reply_markup=backk())
@@ -907,7 +937,7 @@ async def process_year(message: Message, state: FSMContext):
     await state.set_state(AddAnimeStates.series_count)
 
 
-@router.message(AddAnimeStates.series_count)
+@router.message(AddAnimeStates.series_count, IsAdmin())
 async def process_series_count(message: Message, state: FSMContext):
     if not message.text.isdigit():
         await message.answer("⚠️ Iltimos, to'g'ri son kiriting:", reply_markup=backk())
@@ -918,7 +948,7 @@ async def process_series_count(message: Message, state: FSMContext):
     await state.set_state(AddAnimeStates.photo_id)
 
 
-@router.message(AddAnimeStates.photo_id)
+@router.message(AddAnimeStates.photo_id, IsAdmin())
 async def process_photo_id(message: Message, state: FSMContext):
     if not message.photo:
         await message.answer("⚠️ Iltimos, rasm yuboring:", reply_markup=backk())
@@ -959,13 +989,13 @@ async def process_photo_id(message: Message, state: FSMContext):
     await state.clear()
 
 
-@router.message(F.text == "🗑 Anime o'chirish")
+@router.message(F.text == "🗑 Anime o'chirish", IsAdmin())
 async def start_delete_anime(message: Message, state: FSMContext):
     await message.answer("🔢 O'chirmoqchi bo'lgan Anime ID sini kiriting:")
     await state.set_state(DeleteAnimeStates.anime_id)
 
 
-@router.message(DeleteAnimeStates.anime_id)
+@router.message(DeleteAnimeStates.anime_id, IsAdmin())
 async def process_delete_anime(message: Message, state: FSMContext):
     if not message.text.isdigit():
         await message.answer("⚠️ Iltimos, to'g'ri ID kiriting:")
@@ -992,13 +1022,13 @@ async def admin_series_setting(message: Message, state: FSMContext):
     await message.answer('🧩 Qism sozlamalari', reply_markup=qisim_settings_keyboard)
 
 
-@router.message(F.text == "➕ Video qo'shish")
+@router.message(F.text == "➕ Video qo'shish", IsAdmin())
 async def start_add_video(message: Message, state: FSMContext):
     await message.answer("🔢 Anime ID sini kiriting:")
     await state.set_state(AddVideoStates.anime_id)
 
 
-@router.message(AddVideoStates.anime_id)
+@router.message(AddVideoStates.anime_id, IsAdmin())
 async def process_video_anime_id(message: Message, state: FSMContext):
     if not message.text.isdigit():
         await message.answer("⚠️ Iltimos, to'g'ri ID kiriting:")
@@ -1017,7 +1047,7 @@ async def process_video_anime_id(message: Message, state: FSMContext):
     await state.set_state(AddVideoStates.series_number)
 
 
-@router.message(AddVideoStates.series_number)
+@router.message(AddVideoStates.series_number, IsAdmin())
 async def process_series_number(message: Message, state: FSMContext):
     if not message.text.isdigit():
         await message.answer("⚠️ Iltimos, to'g'ri raqam kiriting:")
@@ -1028,7 +1058,7 @@ async def process_series_number(message: Message, state: FSMContext):
     await state.set_state(AddVideoStates.video_file_id)
 
 
-@router.message(AddVideoStates.video_file_id)
+@router.message(AddVideoStates.video_file_id, IsAdmin())
 async def process_video_file(message: Message, state: FSMContext):
     if not message.video:
         await message.answer("⚠️ Iltimos, video fayl yuboring:")
@@ -1049,12 +1079,13 @@ async def process_video_file(message: Message, state: FSMContext):
     )
 
     caption = (
-        f'✅ Yangi qisim qo\'shildi\n'
-        f'ID: {anime.id}\n'
-        f"🎬 <b>{anime.name_uz}</b>\n"
-        f"🇺🇸 <i>{anime.name_en}</i>\n"
-        f"🎞 <b>Qism:</b> {data['series_number']}\n\n"
-    )
+            f"🆕 <b>Yangi qism qo‘shildi!</b>\n\n"
+            f"🎬 <b>{anime.name_uz}</b>\n"
+            # f"🇺🇸 <i>{anime.name_en}</i>\n\n"
+            f"🎞 <b>Qism:</b> {data['series_number']}\n"
+            f"🆔 <b>Anime ID:</b> {anime.id}\n\n"
+            f"🍿 Yangi qismni hoziroq tomosha qiling!"
+        )
 
     if not message.caption:
         await message.bot.send_photo(
@@ -1074,7 +1105,7 @@ async def process_video_file(message: Message, state: FSMContext):
                 reply_markup=build_series_download_keyboard(anime.id),
                 parse_mode='HTML'
             )
-            time.sleep(0.2)
+            await asyncio.sleep(0.2)
         except Exception:
             pass
 
@@ -1082,13 +1113,13 @@ async def process_video_file(message: Message, state: FSMContext):
     await state.clear()
 
 
-@router.message(F.text == "🗑 Video o'chirish")
+@router.message(F.text == "🗑 Video o'chirish", IsAdmin())
 async def start_delete_video(message: Message, state: FSMContext):
     await message.answer("🔢 O'chirmoqchi bo'lgan Video ID sini kiriting:")
     await state.set_state(DeleteVideoStates.video_id)
 
 
-@router.message(DeleteVideoStates.video_id)
+@router.message(DeleteVideoStates.video_id, IsAdmin())
 async def process_delete_video(message: Message, state: FSMContext):
     if not message.text.isdigit():
         await message.answer("⚠️ Iltimos, to'g'ri ID kiriting:")
@@ -1133,7 +1164,7 @@ async def animedow_cmd(message: Message, state: FSMContext):
     )
 
 
-@router.message(UploadSeries.waiting_video)
+@router.message(UploadSeries.waiting_video, IsAdmin())
 async def got_series_video(message: Message, state: FSMContext):
     data = await state.get_data()
     anime_id = data.get("anime_id")
@@ -1195,7 +1226,7 @@ async def add_start(message: Message, state: FSMContext):
     await message.answer("Kanal nomini yubor:", reply_markup=cancel_kb())
 
 
-@router.message(ChannelStates.add_name, F.text)
+@router.message(ChannelStates.add_name, F.text, IsAdmin())
 async def add_name(message: Message, state: FSMContext):
     if message.text == "❌ Bekor qilish":
         await state.clear()
@@ -1207,7 +1238,7 @@ async def add_name(message: Message, state: FSMContext):
     await message.answer("Kanal telegram_id yubor (masalan: -1001234567890):", reply_markup=cancel_kb())
 
 
-@router.message(ChannelStates.add_telegram_id, F.text)
+@router.message(ChannelStates.add_telegram_id, F.text, IsAdmin())
 async def add_telegram_id(message: Message, state: FSMContext):
     if message.text == "❌ Bekor qilish":
         await state.clear()
@@ -1229,7 +1260,7 @@ async def add_telegram_id(message: Message, state: FSMContext):
     await message.answer("Kanal linkini yubor (masalan: https://t.me/kanal yoki @kanal):", reply_markup=cancel_kb())
 
 
-@router.message(ChannelStates.add_link, F.text)
+@router.message(ChannelStates.add_link, F.text, IsAdmin())
 async def add_link(message: Message, state: FSMContext):
     if message.text == "❌ Bekor qilish":
         await state.clear()
@@ -1261,7 +1292,7 @@ async def delete_start(message: Message, state: FSMContext):
     )
 
 
-@router.callback_query(ChannelStates.delete_choose, F.data.startswith("ch_del:"))
+@router.callback_query(ChannelStates.delete_choose, F.data.startswith("ch_del:"), IsAdminCallback())
 async def delete_confirm(call: CallbackQuery, state: FSMContext):
     pk = int(call.data.split(":")[1])
     deleted = await db_channel_delete_by_id(pk)
@@ -1283,7 +1314,7 @@ async def delete_confirm(call: CallbackQuery, state: FSMContext):
     await call.message.answer("📌 Kanal boshqaruvi:", reply_markup=admin_channels_menu_kb())
 
 
-@router.callback_query(ChannelStates.delete_choose, F.data == "ch_del_cancel")
+@router.callback_query(ChannelStates.delete_choose, F.data == "ch_del_cancel", IsAdminCallback())
 async def delete_cancel(call: CallbackQuery, state: FSMContext):
     await state.clear()
     await call.answer("Bekor qilindi", show_alert=False)
@@ -1299,7 +1330,7 @@ async def tarqart(message: Message, state: FSMContext):
     await state.set_state(messagesClass.mess)
 
 
-@router.message(messagesClass.mess)
+@router.message(messagesClass.mess, IsAdmin())
 async def message_state(message: Message, state: FSMContext):
     users = await sync_to_async(lambda: list(TelegramUsers.objects.all()))()
 
@@ -1361,7 +1392,7 @@ async def show_stats(message: Message):
 # ============================================================
 # ADMIN: DB BACKUP
 # ============================================================
-@router.message(F.text == "/sos")
+@router.message(F.text == "/sos", IsAdmin())
 async def sos_backup_handler(message: Message):
     # Faqat admin ishlatsin (xohlamasang olib tashla)
     if message.from_user.id != ADMIN_ID:
@@ -1378,7 +1409,7 @@ async def sos_backup_handler(message: Message):
 
     zipped = zip_bytes(json_name, json_bytes)
 
-    # Telegramga ZIP fayl yuboramiz (JSON katta bo'lishi mumkin)
+    # Telegramga ZIP fayl yuboramiz
     file = BufferedInputFile(zipped, filename=zip_name)
 
     await message.bot.send_document(

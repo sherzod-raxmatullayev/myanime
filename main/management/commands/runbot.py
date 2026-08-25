@@ -23,5 +23,7 @@ class Command(BaseCommand):
 
         try:
             await dp.start_polling(bot)
+            
         finally:
             await bot.session.close()
+            self.stdout.write(self.style.SUCCESS("Bot ishga tushirishda xatolik yuz berdi."))
