@@ -57,7 +57,7 @@ def format_profile(profile, stats):
         premium_until=premium_until,
         referral_count=stats["referral_count"],
         subscription_count=stats["subscription_count"],
-        promo_code=stats["telegram_id"],
+        promo_code=profile.user.telegram_id,
     )
 
 
