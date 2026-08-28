@@ -1,6 +1,8 @@
-from tkinter import Text
+
+
 from django.db import models
 from django.core.validators import MinLengthValidator, MaxLengthValidator
+import uuid
 
 # Create your models here.
 class TelegramUsers(models.Model):
@@ -84,3 +86,21 @@ class Subscriptions(models.Model):
     class Meta:
         unique_together = ('anime', 'telegram_user_id')
 
+class Profile(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.OneToOneField(TelegramUsers, on_delete=models.CASCADE)
+    username = models.CharField(max_length=150, blank=True, null=True, unique=True)
+    bio = models.TextField(blank=True)
+    is_premium = models.BooleanField(default=False)
+    premium_until = models.DateTimeField(null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class Referal(models.Model):
+    referrer = models.ForeignKey(TelegramUsers, related_name='referrals', on_delete=models.CASCADE)
+    referred = models.ForeignKey(TelegramUsers, related_name='referred_by', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('referrer', 'referred')
