@@ -21,6 +21,7 @@ async def show_stats(message: Message):
         f"📱 AppLacations: *{s['apps']}*\n"
         f"📢 Channels: *{s['channels']}*\n"
         f"🎞 Video: *{s['videos']}*\n"
+        f"👤 Profiles: *{s['profiles']}*\n"
         f"⭐ Subscriptions: *{s['subs']}*\n"
     )
     await message.answer(text, parse_mode="Markdown", reply_markup=admin_panel_buttons)

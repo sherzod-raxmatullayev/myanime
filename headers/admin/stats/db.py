@@ -3,7 +3,7 @@
 # ============================================================
 from asgiref.sync import sync_to_async
 
-from main.models import AppLacations, Anime, Channels, Subscriptions, TelegramUsers, Video
+from main.models import AppLacations, Anime, Channels, Profile, Subscriptions, TelegramUsers, Video
 
 
 @sync_to_async
@@ -15,4 +15,5 @@ def db_get_stats():
         "channels": Channels.objects.count(),
         "videos": Video.objects.count(),
         "subs": Subscriptions.objects.count(),
+        "profiles": Profile.objects.count(),
     }
