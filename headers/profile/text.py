@@ -1,32 +1,18 @@
 PROFILE_TEXT = """
 👤 <b>Profil</b>
 
-🆔 Telegram ID:
+@{username}
 <code>{telegram_id}</code>
 
-👤 Username:
-@{username}
+📝 {bio}
 
-📝 Bio:
-{bio}
+💰 Balans: <b>{balance}</b>
+⭐ Premium: {premium}
+⏳ {premium_until}
 
-💰 Balans:
-<b>{balance}</b>
+👥 Referallar: <b>{referral_count}</b>  •  📚 Obunalar: <b>{subscription_count}</b>
 
-⭐ Premium:
-{premium}
-
-⏳ Premium muddati:
-{premium_until}
-
-👥 Referallar:
-<b>{referral_count}</b>
-
-📚 Obunalar:
-<b>{subscription_count}</b>
-
-🎟 Promo kodingiz:
-<code>{promo_code}</code>
+🎟 Promo: <code>{promo_code}</code>
 """
 
 
